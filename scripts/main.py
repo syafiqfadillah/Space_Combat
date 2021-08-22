@@ -1,5 +1,10 @@
 import scenes
 
-if __name__ == "__main__":
+
+def main():
     play = scenes.MainMenu()
     play.run()
+
+
+if __name__ == "__main__":
+    main()
