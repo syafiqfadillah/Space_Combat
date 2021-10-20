@@ -2,8 +2,10 @@ import sys
 
 import pygame
 
-import model
-import usefull_func
+from . import model
+from . import helper_func
+
+from .colors import Colors
 
 
 pygame.init()
@@ -16,20 +18,13 @@ HEIGHT = 600
 WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Space Combat")
 
-RED = (255, 0, 0)
-BLUE = (0, 0, 255)
-WHITE = (255, 255, 255)
-GREEN = (0, 255, 0)
-GREY = (170, 170, 170)
-BLACK = (0, 0, 0)
-
 FPS = 60
 
 class GameOver:
     def __init__(self):
         self.game_text = model.FontCustom("Game", 80, WHITE, (320, 200))
         self.over_text = model.FontCustom("Over", 80, WHITE, (320, 263))
-        self.menu_button = model.Button("Menu", BLACK, GREY, (310, 400))
+        self.menu_button = model.Button("Menu", Colors.BLACK, Colors.GREY, (310, 400))
         self.square = pygame.Rect(150, 100, 500, 400)
         self.click = False
 
@@ -53,7 +48,7 @@ class GameOver:
                 self.click = False
 
     def draw(self, window):
-        pygame.draw.rect(window, BLACK, self.square)
+        pygame.draw.rect(window, Colors.BLACK, self.square)
         self.game_text.draw(window)
         self.over_text.draw(window)
         self.menu_button.draw(window)
@@ -73,9 +68,9 @@ class GameOver:
 
 class MainMenu:
     def __init__(self):
-        self.space_text = model.FontCustom("SPACE", 80, WHITE, (300, 200))
-        self.combat_text = model.FontCustom("COMBAT", 80, WHITE, (285, 263))
-        self.start_button = model.Button("Start", BLACK, GREY, (310, 400))
+        self.space_text = model.FontCustom("SPACE", 80, Colors.WHITE, (300, 200))
+        self.combat_text = model.FontCustom("COMBAT", 80, Colors.WHITE, (285, 263))
+        self.start_button = model.Button("Start", Colors.BLACK, Colors.GREY, (310, 400))
         self.rect = pygame.Rect(0, 0, 0, 0)
         self.shader = False
         self.click = False
@@ -114,8 +109,8 @@ class MainMenu:
         self.effect()
 
     def draw(self, window):
-        WINDOW.fill((0, 0, 0))
-        pygame.draw.rect(window, GREY, self.rect)
+        WINDOW.fill(Colors.BLACK)
+        pygame.draw.rect(window, Colors.GREY, self.rect)
         self.space_text.draw(window)
         self.combat_text.draw(window)
         self.start_button.draw(WINDOW)
@@ -135,14 +130,14 @@ class MainMenu:
 
 class Game:
     def __init__(self):
-        self.background = usefull_func.load_image("desert-backgorund.png", 800, 600, 0)
+        self.background = helper_func.load_image("desert-backgorund.png", 800, 600, 0)
 
         self.player_one = model.Player("sprite_02.png", 16, 25, (400, 500), 0)
         self.player_two = model.Player("sprite_02.png", 16, 25, (400, 90), 180)
         self.players = pygame.sprite.Group((self.player_one, self.player_two))
 
-        self.player_one_hb = model.Bar("bar_0.png", RED, self.player_one.health, 10, (690, 580))
-        self.player_two_hb = model.Bar("bar_0.png", RED, self.player_two.health, 10, (10, 10))
+        self.player_one_hb = model.Bar("bar_0.png", Colors.RED, self.player_one.health, 10, (690, 580))
+        self.player_two_hb = model.Bar("bar_0.png", Colors.RED, self.player_two.health, 10, (10, 10))
 
         self.player_one_bullets = []
         self.player_two_bullets = []
@@ -186,7 +181,7 @@ class Game:
         for bullet in self.player_one_bullets:
             bullet.move(True)
 
-            if usefull_func.is_collide(bullet, self.player_two):
+            if helper_func.is_collide(bullet, self.player_two):
                 self.player_two.health -= 1
                 bullet.delete(self.player_one_bullets)
 
@@ -196,14 +191,14 @@ class Game:
         for bullet in self.player_two_bullets:
             bullet.move(False)
 
-            if usefull_func.is_collide(bullet, self.player_one):
+            if helper_func.is_collide(bullet, self.player_one):
                 self.player_one.health -= 1
                 bullet.delete(self.player_two_bullets)
 
             if bullet.position.x < 0 or bullet.position.x > WIDTH or bullet.position.y < 0 or bullet.position.y > HEIGHT:
                 bullet.delete(self.player_two_bullets)
         
-        if usefull_func.is_collide(self.player_one, self.player_two) and usefull_func.is_collide(self.player_two, self.player_one):
+        if helper_func.is_collide(self.player_one, self.player_two) and helper_func.is_collide(self.player_two, self.player_one):
             self.player_one.health -= 1
             self.player_two.health -= 1
      

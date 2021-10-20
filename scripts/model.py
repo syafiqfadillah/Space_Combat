@@ -1,12 +1,12 @@
 import pygame
 
-import usefull_func
+from . import helper_func
 
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, image, width, height, position, rotation):
         super().__init__()
-        self.image = usefull_func.load_image(image, width, height, rotation)
+        self.image = helper_func.load_image(image, width, height, rotation)
         self.original_image = self.image
         self.rect = self.image.get_rect(center=position)
         self.position = pygame.math.Vector2(position)
@@ -58,7 +58,7 @@ class Player(pygame.sprite.Sprite):
 
 class Bullet:
     def __init__(self, image, width, height, position, direction):
-        self.image = usefull_func.load_image(image, width, height, 0)
+        self.image = helper_func.load_image(image, width, height, 0)
         self.x = position[0]-6
         self.y = position[1]-2
         self.position = pygame.math.Vector2((self.x, self.y))
@@ -86,7 +86,7 @@ class Bar:
         self.bar_image_width = width*2
         self.bar_image_height = height*2
         self.bar_image_position = pygame.math.Vector2((position[0]-50, position[1]-5))
-        self.image = usefull_func.load_image(image, self.bar_image_width, self.bar_image_height, 0)
+        self.image = helper_func.load_image(image, self.bar_image_width, self.bar_image_height, 0)
         self.position = pygame.math.Vector2(position)
         self.color = color
         self.rect = pygame.Rect(self.position, (width, height))
@@ -100,7 +100,7 @@ class Bar:
 
 
 class FontCustom:
-    def __init__(self, text, size, color, position, font="../Assets/ARCADECLASSIC.ttf"):
+    def __init__(self, text, size, color, position, font="Assets/ARCADECLASSIC.ttf"):
         font = pygame.font.Font(font, size)
         self.text = font.render(text, True, color)
         self.position = pygame.math.Vector2(position)

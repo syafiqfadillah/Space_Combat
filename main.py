@@ -1,8 +1,8 @@
-import scenes
+from scripts.scenes import MainMenu
 
 
 def main():
-    play = scenes.MainMenu()
+    play = MainMenu()
     play.run()
 
 
